@@ -5,9 +5,23 @@ import { useStoryblokApi } from '@storyblok/vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 
+interface ProjectBlock {
+  _uid: string
+  title?: string
+  description?: string
+  tags?: string
+  github_link?: string | { url?: string; cached_url?: string }
+  demo_link?: string | { url?: string; cached_url?: string }
+  [key: string]: unknown
+}
+
 interface StoryData {
-  content: any
-  [key: string]: any
+  content: {
+    header_title?: string
+    header_description?: string
+    body?: ProjectBlock[]
+  }
+  [key: string]: unknown
 }
 
 const story = ref<StoryData | null>(null)
@@ -48,7 +62,7 @@ const updateTime = () => {
     .toUpperCase()
 }
 
-let timer: any
+let timer: ReturnType<typeof setInterval> | undefined
 
 onMounted(async () => {
   updateTime()
@@ -58,9 +72,9 @@ onMounted(async () => {
   const loadInterval = setInterval(() => {
     if (progress.value < 90) {
       progress.value += Math.floor(Math.random() * 10) + 2
-      if (progress.value > 20) loadingText.value = messages[0]
-      if (progress.value > 45) loadingText.value = messages[1]
-      if (progress.value > 70) loadingText.value = messages[2]
+      if (progress.value > 20) loadingText.value = messages[0] || 'Accessing directory...'
+      if (progress.value > 45) loadingText.value = messages[1] || 'Decrypting data...'
+      if (progress.value > 70) loadingText.value = messages[2] || 'Syncing assets...'
     }
   }, 100)
 
@@ -72,7 +86,7 @@ onMounted(async () => {
 
     // Data siap, tembak ke 100%
     progress.value = 100
-    loadingText.value = messages[3]
+    loadingText.value = messages[3] || 'Archive ready.'
 
     setTimeout(() => {
       clearInterval(loadInterval)
@@ -90,9 +104,11 @@ onUnmounted(() => {
   clearInterval(timer)
 })
 
-const openLink = (linkObj: any) => {
-  const actualUrl =
-    typeof linkObj === 'string' ? linkObj : linkObj?.url || linkObj?.cached_url || ''
+const openLink = (linkObj: unknown) => {
+  const link = linkObj as { url?: string; cached_url?: string } | string
+
+  const actualUrl = typeof link === 'string' ? link : link?.url || link?.cached_url || ''
+
   if (!actualUrl || actualUrl === '#' || actualUrl.trim() === '') {
     router.push('/404-empty')
   } else {
