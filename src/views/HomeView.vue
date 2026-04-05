@@ -80,8 +80,8 @@ const updateTime = () => {
     .toUpperCase()
 }
 
-let timer: any
-let logInterval: any
+let timer: ReturnType<typeof setInterval> | undefined
+let logInterval: ReturnType<typeof setInterval> | undefined
 
 onMounted(() => {
   updateTime()
@@ -92,10 +92,10 @@ onMounted(() => {
     if (progress.value < 100) {
       progress.value += Math.floor(Math.random() * 15) + 5
       if (progress.value > 100) progress.value = 100
-      if (progress.value > 25) loadingText.value = messages[0]
-      if (progress.value > 50) loadingText.value = messages[1]
-      if (progress.value > 75) loadingText.value = messages[2]
-      if (progress.value === 100) loadingText.value = messages[3]
+      if (progress.value > 25) loadingText.value = messages[0] || 'Loading...'
+      if (progress.value > 50) loadingText.value = messages[1] || 'Processing...'
+      if (progress.value > 75) loadingText.value = messages[2] || 'Syncing...'
+      if (progress.value === 100) loadingText.value = messages[3] || 'Ready.'
     } else {
       clearInterval(loadInterval)
       setTimeout(() => {
@@ -117,7 +117,10 @@ onMounted(() => {
       `[GUI] Rendering v3.0 interface...`,
       `[STB] Storyblok Sync: OK`,
     ]
-    logs.value.push(newLogs[Math.floor(Math.random() * newLogs.length)])
+    const randomLog = newLogs[Math.floor(Math.random() * newLogs.length)]
+    if (randomLog) {
+      logs.value.push(randomLog)
+    }
     if (logs.value.length > 3) logs.value.shift()
   }, 4000)
 })
