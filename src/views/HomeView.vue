@@ -11,7 +11,6 @@ const progress = ref(0)
 const loadingText = ref('Fetching Repository...')
 const currentTime = ref('')
 
-// --- GLITCH TYPING LOGIC (FIXED FOR MOBILE) ---
 const displayHeader = ref('')
 const fullHeader = 'Digital Logic.'
 const mouseX = ref(0)
@@ -36,7 +35,6 @@ const startGlitchTyping = () => {
       const randomChars = '!@#$%^&*()_+'
       const randomChar = randomChars[Math.floor(Math.random() * randomChars.length)]
 
-      // Efek glitch: tampilin karakter acak dulu sebentar
       displayHeader.value = fullHeader.substring(0, i) + randomChar
 
       setTimeout(() => {
@@ -63,10 +61,17 @@ const openLink = (url: string) => {
 }
 
 const socials = [
-  { icon: 'github', link: 'https://github.com/sachioramzy' },
-  { icon: 'linkedin', link: 'https://linkedin.com/in/sachioramzy' },
-  { icon: 'instagram', link: 'https://instagram.com/sachioramzy' },
+  { icon: 'github', link: 'https://github.com/Adreon19/' },
+  { icon: 'linkedin', link: 'https://www.linkedin.com/in/sachio-ramzy-zahran/' },
+  { icon: 'instagram', link: 'https://instagram.com/chioudahjamsegini' },
 ]
+
+const quotes = [
+  'Building digital bridges between logic and creativity.',
+  'Automating the present, architecting the future.',
+  'Precision in every pixel, logic in every line.',
+]
+const randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
 
 const updateTime = () => {
   const now = new Date()
@@ -294,31 +299,72 @@ onUnmounted(() => {
           ></div>
         </div>
 
-        <div
-          class="bg-slate-900/20 border border-white/5 rounded-[3rem] p-8 flex flex-col items-center justify-center text-center group hover:bg-slate-900/40 transition-all backdrop-blur-sm"
-        >
-          <p
-            class="text-white font-black text-3xl italic mb-1 uppercase tracking-tighter leading-none"
+        <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <div
+            class="bg-slate-900/20 border border-white/5 rounded-[3rem] p-8 flex flex-col items-center justify-center text-center group hover:bg-slate-900/40 transition-all backdrop-blur-sm"
           >
-            Gap Year
-          </p>
-          <div class="h-1 w-10 bg-blue-600 rounded-full my-3"></div>
-          <p class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em]">
-            Full-time Learning
-          </p>
-        </div>
-
-        <div class="bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] p-4">
-          <div class="grid grid-cols-3 gap-3 h-full">
-            <a
-              v-for="social in socials"
-              :key="social.icon"
-              @click.stop="openLink(social.link)"
-              href="javascript:void(0)"
-              class="rounded-2xl bg-white/5 flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/10 transition-all border border-transparent hover:border-white/10 active:scale-90 aspect-square"
+            <p
+              class="text-white font-black text-3xl italic mb-1 uppercase tracking-tighter leading-none"
             >
-              <i :class="'pi pi-' + social.icon" class="text-xl"></i>
-            </a>
+              Gap Year
+            </p>
+            <div class="h-1 w-10 bg-blue-600 rounded-full my-3"></div>
+            <p class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em]">
+              Full-time Learning
+            </p>
+          </div>
+
+          <div class="flex flex-col justify-between p-2">
+            <div
+              class="hidden md:flex flex-col gap-4 opacity-40 hover:opacity-100 transition-opacity duration-500 mt-4"
+            >
+              <div class="space-y-2">
+                <div class="flex justify-between items-center max-w-45">
+                  <p class="text-[7px] font-mono text-blue-500 uppercase tracking-[0.2em]">
+                    Stack.Stability
+                  </p>
+                  <p class="text-[7px] font-mono text-blue-400">94%</p>
+                </div>
+                <div class="flex gap-1">
+                  <div
+                    v-for="i in 6"
+                    :key="i"
+                    :class="['h-1 w-6 rounded-full', i < 6 ? 'bg-blue-600/50' : 'bg-slate-800']"
+                  ></div>
+                </div>
+              </div>
+              <div class="space-y-1">
+                <p class="text-[7px] font-mono text-emerald-500 uppercase tracking-[0.2em]">
+                  Uptime.Global
+                </p>
+                <p class="text-xs font-mono text-white tracking-widest">
+                  99.98<span class="animate-pulse text-emerald-500">%</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-end justify-between gap-4 mt-auto">
+              <div class="text-left mb-1">
+                <p
+                  class="text-[7px] text-slate-600 font-mono uppercase tracking-[0.15em] leading-relaxed italic max-w-32.5"
+                >
+                  "{{ randomQuote }}"
+                </p>
+              </div>
+
+              <div class="bg-[#0a0a0a] border border-white/10 rounded-2xl p-1.5 shadow-2xl">
+                <div class="flex flex-row md:flex-col gap-1.5">
+                  <a
+                    v-for="social in socials"
+                    :key="social.icon"
+                    @click.stop="openLink(social.link)"
+                    class="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-500 hover:text-white hover:bg-blue-600/20 transition-all border border-transparent hover:border-blue-500/20"
+                  >
+                    <i :class="'pi pi-' + social.icon" class="text-base"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
