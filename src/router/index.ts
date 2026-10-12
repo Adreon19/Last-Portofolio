@@ -18,6 +18,11 @@ const router = createRouter({
       name: 'empty-project',
       component: () => import('../views/EmptyProjectView.vue'),
     },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      redirect: '/404-empty',
+    },
   ],
 })
 
